@@ -26,9 +26,7 @@ const UpcomingMoviesPage = (props) => {
       title="Upcoming Movies"
       movies={movies}
       action={(movie) => {
-        return (
-          <PlaylistAddIcon onClick={() => addToWatchList(movie)} /> // Add onClick handler
-        );
+        return <PlaylistAddIcon onClick={() => addToWatchList(movie)} />;
       }}
     />
   );
