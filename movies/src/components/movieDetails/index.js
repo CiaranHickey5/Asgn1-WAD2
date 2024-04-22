@@ -74,6 +74,13 @@ const MovieDetails = ({ movie }) => {
           </Button>
         </Link>
       </Paper>
+      <Paper component="ul" sx={{ ...root }}>
+        <Link to={`/movies/${movie.id}/recommendations`}>
+          <Button variant="outlined" size="medium" color="primary">
+            Recommendations
+          </Button>
+        </Link>
+      </Paper>
       <Fab
         color="secondary"
         variant="extended"

@@ -8,7 +8,7 @@ function MovieListPageTemplate({ movies, title, action }) {
   const [nameFilter, setNameFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
   const [currentPage, setCurrentPage] = useState(1);
-  const moviesPerPage = 10;
+  const moviesPerPage = 3;
   const genreId = Number(genreFilter);
 
   const handleChange = (type, value) => {

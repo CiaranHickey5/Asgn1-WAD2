@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import Slider from "@mui/material/Slider";
 import img from "../../images/pexels-dziana-hasanbekava-5480827.jpg";
 import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
@@ -22,6 +23,7 @@ const formControl = {
 
 export default function FilterMoviesCard(props) {
   const { data, error, isLoading, isError } = useQuery("genres", getGenres);
+  const [ratingFilter, setRatingFilter] = useState([0, 10]);
 
   if (isLoading) {
     return <Spinner />;
@@ -30,6 +32,7 @@ export default function FilterMoviesCard(props) {
   if (isError) {
     return <h1>{error.message}</h1>;
   }
+
   const genres = data.genres;
   if (genres[0].name !== "All") {
     genres.unshift({ id: "0", name: "All" });
@@ -37,7 +40,7 @@ export default function FilterMoviesCard(props) {
 
   const handleChange = (e, type, value) => {
     e.preventDefault();
-    props.onUserInput(type, value); // NEW
+    props.onUserInput(type, value);
   };
 
   const handleTextChange = (e, props) => {
@@ -46,6 +49,16 @@ export default function FilterMoviesCard(props) {
 
   const handleGenreChange = (e) => {
     handleChange(e, "genre", e.target.value);
+  };
+
+  const handleMinRatingChange = (event, newValue) => {
+    const newMin = Math.min(newValue, ratingFilter[1]);
+    setRatingFilter([newMin, ratingFilter[1]]);
+  };
+
+  const handleMaxRatingChange = (event, newValue) => {
+    const newMax = Math.max(newValue, ratingFilter[0]);
+    setRatingFilter([ratingFilter[0], newMax]);
   };
 
   return (
@@ -79,15 +92,35 @@ export default function FilterMoviesCard(props) {
             value={props.genreFilter}
             onChange={handleGenreChange}
           >
-            {genres.map((genre) => {
-              return (
-                <MenuItem key={genre.id} value={genre.id}>
-                  {genre.name}
-                </MenuItem>
-              );
-            })}
+            {genres.map((genre) => (
+              <MenuItem key={genre.id} value={genre.id}>
+                {genre.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
+        <Typography id="rating-range-slider" gutterBottom>
+          Rating Range
+        </Typography>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Slider
+            value={ratingFilter[0]}
+            onChange={handleMinRatingChange}
+            valueLabelDisplay="auto"
+            aria-labelledby="min-rating-slider"
+            min={0}
+            max={10}
+          />
+          <Typography style={{ margin: "0 16px" }}>to</Typography>
+          <Slider
+            value={ratingFilter[1]}
+            onChange={handleMaxRatingChange}
+            valueLabelDisplay="auto"
+            aria-labelledby="max-rating-slider"
+            min={0}
+            max={10}
+          />
+        </div>
       </CardContent>
       <CardMedia sx={{ height: 300 }} image={img} title="Filter" />
       <CardContent>
