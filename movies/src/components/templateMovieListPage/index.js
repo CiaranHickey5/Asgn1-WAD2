@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid";
 function MovieListPageTemplate({ movies, title, action }) {
   const [nameFilter, setNameFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("0");
+  const [ratingFilter, setRatingFilter] = useState([0, 10]);
   const [currentPage, setCurrentPage] = useState(1);
   const moviesPerPage = 3;
   const genreId = Number(genreFilter);
@@ -14,6 +15,14 @@ function MovieListPageTemplate({ movies, title, action }) {
   const handleChange = (type, value) => {
     if (type === "name") setNameFilter(value);
     else setGenreFilter(value);
+  };
+
+  const handleMinRatingChange = (event, newValue) => {
+    setRatingFilter([newValue, ratingFilter[1]]);
+  };
+
+  const handleMaxRatingChange = (event, newValue) => {
+    setRatingFilter([ratingFilter[0], newValue]);
   };
 
   const indexOfLastMovie = currentPage * moviesPerPage;
@@ -24,6 +33,10 @@ function MovieListPageTemplate({ movies, title, action }) {
     })
     .filter((m) => {
       return genreId > 0 ? m.genre_ids.includes(genreId) : true;
+    })
+    .filter((m) => {
+      const rating = m.vote_average;
+      return rating >= ratingFilter[0] && rating <= ratingFilter[1];
     })
     .slice(indexOfFirstMovie, indexOfLastMovie);
 
@@ -68,6 +81,9 @@ function MovieListPageTemplate({ movies, title, action }) {
             onUserInput={handleChange}
             titleFilter={nameFilter}
             genreFilter={genreFilter}
+            ratingFilter={ratingFilter}
+            onMinRatingChange={handleMinRatingChange}
+            onMaxRatingChange={handleMaxRatingChange}
           />
         </Grid>
         <MovieList action={action} movies={displayedMovies} />
