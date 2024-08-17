@@ -10,13 +10,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Slider from "@mui/material/Slider";
-import Grid from "@mui/material/Grid"; // Import Grid for layout
 import img from "../../images/pexels-dziana-hasanbekava-5480827.jpg";
 import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
 import Spinner from "../spinner";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Box, useTheme, useMediaQuery } from "@mui/material";
 
 const formControl = {
   margin: 1,
@@ -29,6 +29,8 @@ export default function FilterMoviesCard(props) {
   const [ratingFilter, setRatingFilter] = useState([0, 10]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   if (isLoading) {
     return <Spinner />;
@@ -78,12 +80,15 @@ export default function FilterMoviesCard(props) {
     props.onEndDateChange(date);
   };
 
+  const handleSortChange = (event) => {
+    props.onSortChange(event.target.value);
+  };
+
   return (
     <Card
       sx={{
-        maxWidth: 345,
+        maxWidth: isMobile ? 345 : 400,
         backgroundColor: "rgb(204, 204, 0)",
-        margin: "auto", // Center the card horizontally
       }}
       variant="outlined"
     >
@@ -93,7 +98,7 @@ export default function FilterMoviesCard(props) {
           Filter the movies.
         </Typography>
         <TextField
-          sx={{ ...formControl }}
+          sx={{ ...formControl, width: "100%" }}
           id="filled-search"
           label="Search field"
           type="search"
@@ -101,12 +106,11 @@ export default function FilterMoviesCard(props) {
           value={props.titleFilter}
           onChange={handleTextChange}
         />
-        <FormControl sx={{ ...formControl }}>
+        <FormControl sx={{ ...formControl, width: "100%" }}>
           <InputLabel id="genre-label">Genre</InputLabel>
           <Select
             labelId="genre-label"
             id="genre-select"
-            defaultValue=""
             value={props.genreFilter}
             onChange={handleGenreChange}
           >
@@ -118,67 +122,80 @@ export default function FilterMoviesCard(props) {
           </Select>
         </FormControl>
 
-        {/* Responsive Rating Range Filter */}
+        <FormControl sx={{ ...formControl, width: "100%" }}>
+          <InputLabel id="sort-label">Sort By</InputLabel>
+          <Select
+            labelId="sort-label"
+            id="sort-select"
+            value={props.sortOrder || "ratingDesc"}
+            onChange={handleSortChange}
+            size="small"
+          >
+            <MenuItem value="ratingDesc">Rating (Highest First)</MenuItem>
+            <MenuItem value="alphabetical">Alphabetical Order</MenuItem>
+            <MenuItem value="newest">Newest Release Date</MenuItem>
+          </Select>
+        </FormControl>
+
         <Typography id="rating-range-slider" gutterBottom>
           Rating Range
         </Typography>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={5}>
-            <Slider
-              value={ratingFilter[0]}
-              onChange={handleMinRatingChange}
-              valueLabelDisplay="auto"
-              aria-labelledby="min-rating-slider"
-              min={0}
-              max={10}
-            />
-          </Grid>
-          <Grid item xs={12} sm={2} style={{ textAlign: "center" }}>
-            <Typography>to</Typography>
-          </Grid>
-          <Grid item xs={12} sm={5}>
-            <Slider
-              value={ratingFilter[1]}
-              onChange={handleMaxRatingChange}
-              valueLabelDisplay="auto"
-              aria-labelledby="max-rating-slider"
-              min={0}
-              max={10}
-            />
-          </Grid>
-        </Grid>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Slider
+            value={ratingFilter[0]}
+            onChange={handleMinRatingChange}
+            valueLabelDisplay="auto"
+            aria-labelledby="min-rating-slider"
+            min={0}
+            max={10}
+          />
+          <Typography style={{ margin: "0 16px" }}>to</Typography>
+          <Slider
+            value={ratingFilter[1]}
+            onChange={handleMaxRatingChange}
+            valueLabelDisplay="auto"
+            aria-labelledby="max-rating-slider"
+            min={0}
+            max={10}
+          />
+        </div>
 
-        {/* Responsive Date Range Filter */}
         <Typography id="date-range-picker" gutterBottom>
           Release Date Range
         </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <ReactDatePicker
-              selected={startDate}
-              onChange={handleStartDateChange}
-              placeholderText="Start Date"
-              className="form-control"
-              isClearable
-              dateFormat="MM/dd/yyyy"
-              wrapperClassName="datePicker"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <ReactDatePicker
-              selected={endDate}
-              onChange={handleEndDateChange}
-              placeholderText="End Date"
-              className="form-control"
-              isClearable
-              dateFormat="MM/dd/yyyy"
-              wrapperClassName="datePicker"
-            />
-          </Grid>
-        </Grid>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            gap: 1,
+          }}
+        >
+          <ReactDatePicker
+            selected={startDate}
+            onChange={handleStartDateChange}
+            placeholderText="Start Date"
+            className="form-control"
+            isClearable
+            dateFormat="yyyy/MM/dd"
+          />
+          <ReactDatePicker
+            selected={endDate}
+            onChange={handleEndDateChange}
+            placeholderText="End Date"
+            className="form-control"
+            isClearable
+            dateFormat="yyyy/MM/dd"
+          />
+        </Box>
       </CardContent>
-
       <CardMedia sx={{ height: 300 }} image={img} title="Filter" />
+      <CardContent>
+        <Typography variant="h5" component="h1">
+          <SearchIcon fontSize="large" />
+          Filter the movies.
+          <br />
+        </Typography>
+      </CardContent>
     </Card>
   );
 }
