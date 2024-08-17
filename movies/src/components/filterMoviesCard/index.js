@@ -10,6 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Slider from "@mui/material/Slider";
+import Grid from "@mui/material/Grid"; // Import Grid for layout
 import img from "../../images/pexels-dziana-hasanbekava-5480827.jpg";
 import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from "react-query";
@@ -82,6 +83,7 @@ export default function FilterMoviesCard(props) {
       sx={{
         maxWidth: 345,
         backgroundColor: "rgb(204, 204, 0)",
+        margin: "auto", // Center the card horizontally
       }}
       variant="outlined"
     >
@@ -115,55 +117,68 @@ export default function FilterMoviesCard(props) {
             ))}
           </Select>
         </FormControl>
+
+        {/* Responsive Rating Range Filter */}
         <Typography id="rating-range-slider" gutterBottom>
           Rating Range
         </Typography>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Slider
-            value={ratingFilter[0]}
-            onChange={handleMinRatingChange}
-            valueLabelDisplay="auto"
-            aria-labelledby="min-rating-slider"
-            min={0}
-            max={10}
-          />
-          <Typography style={{ margin: "0 16px" }}>to</Typography>
-          <Slider
-            value={ratingFilter[1]}
-            onChange={handleMaxRatingChange}
-            valueLabelDisplay="auto"
-            aria-labelledby="max-rating-slider"
-            min={0}
-            max={10}
-          />
-        </div>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={5}>
+            <Slider
+              value={ratingFilter[0]}
+              onChange={handleMinRatingChange}
+              valueLabelDisplay="auto"
+              aria-labelledby="min-rating-slider"
+              min={0}
+              max={10}
+            />
+          </Grid>
+          <Grid item xs={12} sm={2} style={{ textAlign: "center" }}>
+            <Typography>to</Typography>
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <Slider
+              value={ratingFilter[1]}
+              onChange={handleMaxRatingChange}
+              valueLabelDisplay="auto"
+              aria-labelledby="max-rating-slider"
+              min={0}
+              max={10}
+            />
+          </Grid>
+        </Grid>
 
+        {/* Responsive Date Range Filter */}
         <Typography id="date-range-picker" gutterBottom>
           Release Date Range
         </Typography>
-        <ReactDatePicker
-          selected={startDate}
-          onChange={handleStartDateChange}
-          placeholderText="Start Date"
-          className="form-control"
-          isClearable
-        />
-        <ReactDatePicker
-          selected={endDate}
-          onChange={handleEndDateChange}
-          placeholderText="End Date"
-          className="form-control"
-          isClearable
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <ReactDatePicker
+              selected={startDate}
+              onChange={handleStartDateChange}
+              placeholderText="Start Date"
+              className="form-control"
+              isClearable
+              dateFormat="MM/dd/yyyy"
+              wrapperClassName="datePicker"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <ReactDatePicker
+              selected={endDate}
+              onChange={handleEndDateChange}
+              placeholderText="End Date"
+              className="form-control"
+              isClearable
+              dateFormat="MM/dd/yyyy"
+              wrapperClassName="datePicker"
+            />
+          </Grid>
+        </Grid>
       </CardContent>
+
       <CardMedia sx={{ height: 300 }} image={img} title="Filter" />
-      <CardContent>
-        <Typography variant="h5" component="h1">
-          <SearchIcon fontSize="large" />
-          Filter the movies.
-          <br />
-        </Typography>
-      </CardContent>
     </Card>
   );
 }

@@ -11,7 +11,7 @@ function MovieListPageTemplate({ movies, title, action }) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const moviesPerPage = 3;
+  const moviesPerPage = 5;
   const genreId = Number(genreFilter);
 
   const handleChange = (type, value) => {
