@@ -1,9 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 
 const MovieVideo = ({ movie }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [showNoVideos, setShowNoVideos] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (movie.results && movie.results.length === 0) {
+        setShowNoVideos(true);
+      }
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [movie.results]);
 
   return (
     <>
@@ -11,7 +22,6 @@ const MovieVideo = ({ movie }) => {
         Videos
       </Typography>
 
-      {/* Check if movie.results is defined and not empty before rendering videos */}
       {movie.results && movie.results.length > 0 ? (
         movie.results.map((video) => (
           <div key={video.id}>
@@ -25,8 +35,10 @@ const MovieVideo = ({ movie }) => {
             ></iframe>
           </div>
         ))
-      ) : (
+      ) : showNoVideos ? (
         <Typography>No videos available</Typography>
+      ) : (
+        <Typography>Loading videos...</Typography>
       )}
 
       <Drawer
