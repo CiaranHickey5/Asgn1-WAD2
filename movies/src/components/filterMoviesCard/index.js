@@ -59,15 +59,15 @@ export default function FilterMoviesCard(props) {
   };
 
   const handleMinRatingChange = (event, newValue) => {
-    const newMin = Math.min(newValue, ratingFilter[1]);
-    setRatingFilter([newMin, ratingFilter[1]]);
-    props.onMinRatingChange(event, newMin);
+    if (newValue > ratingFilter[1]) return;
+    setRatingFilter([newValue, ratingFilter[1]]);
+    props.onMinRatingChange(event, newValue);
   };
 
   const handleMaxRatingChange = (event, newValue) => {
-    const newMax = Math.max(newValue, ratingFilter[0]);
-    setRatingFilter([ratingFilter[0], newMax]);
-    props.onMaxRatingChange(event, newMax);
+    if (newValue < ratingFilter[0]) return;
+    setRatingFilter([ratingFilter[0], newValue]);
+    props.onMaxRatingChange(event, newValue);
   };
 
   const handleStartDateChange = (date) => {

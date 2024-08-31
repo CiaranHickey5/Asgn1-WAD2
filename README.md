@@ -2,13 +2,21 @@
 
 Name: Ciaran Hickey
 
+## Table of contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Setup-Requirements](#setup-requirements)
+- [API-Endpoints](#api-endpoints)
+- [Routing](#routing)
+
 ## Overview.
 
 This repo contains a movie app, specifically using TMDB api and react.
 It displays the latest and greatest movies. Movie statistics, reviews and more can be found.
 This assignemnt is a continuation from the weekly labs where other features must be added to the app.
 
-### Features.
+## Features.
 
 - Feature 1: Three new static endpoints
   I added three new static endpoints to the app. Namely now playing, popular and top rated movies. The site header was updated to surf between the movie lists.
@@ -16,7 +24,7 @@ This assignemnt is a continuation from the weekly labs where other features must
   Users can use two sliders as a minimum and maximum range of rating. The movies with a rating between the minimum and maximum values will be shown. User is unable to make maximum slider below the minimum slider.
 - Feature 3: Release date range
   Users can filter movies between two selected dates. The movies that were released between the dates will be displayed.
-- Feature 4: React-query caching on all static endpoints
+- Feature 4: React-query caching on all static and parameterised endpoints
 - Feature 5: Pagination
   The movie lists have pagination implemented with a maximum of 5 movies shown per page. The number of pages are shown below the movie list where the user can click to browse between each.
 - Feature 6: Responsive UI layout for filter card.

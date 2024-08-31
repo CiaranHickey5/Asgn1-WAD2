@@ -96,8 +96,12 @@ function MovieListPageTemplate({ movies, title, action }) {
             titleFilter={nameFilter}
             genreFilter={genreFilter}
             onUserInput={handleChange}
-            onMinRatingChange={(value) => handleChange("minRating", value)}
-            onMaxRatingChange={(value) => handleChange("maxRating", value)}
+            onMinRatingChange={(event, value) =>
+              handleChange("minRating", value)
+            }
+            onMaxRatingChange={(event, value) =>
+              handleChange("maxRating", value)
+            }
             onStartDateChange={(date) => handleChange("startDate", date)}
             onEndDateChange={(date) => handleChange("endDate", date)}
             onSortChange={(value) => handleChange("sort", value)}
