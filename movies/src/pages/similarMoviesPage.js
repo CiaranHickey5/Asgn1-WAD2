@@ -1,35 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import MovieListPageTemplate from "../components/templateMovieListPage";
+import PageTemplate from "../components/templateMovieListPage";
+import { useQuery } from "react-query";
 import { getSimilarMovies } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
+import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 
 const SimilarMoviesPage = () => {
   const { id } = useParams();
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data, error, isLoading, isError } = useQuery(
+    ["similarMovies", id],
+    () => getSimilarMovies(id)
+  );
 
-  useEffect(() => {
-    const fetchSimilarMovies = async () => {
-      setLoading(true);
-      try {
-        const response = await getSimilarMovies(id);
-        setMovies(response.results);
-      } catch (error) {
-        console.error("Failed to fetch similar movies:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSimilarMovies();
-  }, [id]);
-
-  if (loading) {
+  if (isLoading) {
     return <Spinner />;
   }
+  if (isError) {
+    return <h1>{error.message}</h1>;
+  }
 
-  return <MovieListPageTemplate title="Similar Movies" movies={movies} />;
+  const movies = data.results;
+
+  return (
+    <PageTemplate
+      title="Similar Movies"
+      movies={movies}
+      action={(movie) => {
+        return <AddToFavoritesIcon movie={movie} />;
+      }}
+    />
+  );
 };
 
 export default SimilarMoviesPage;
