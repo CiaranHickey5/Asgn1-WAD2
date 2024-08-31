@@ -75,9 +75,9 @@ const MovieDetails = ({ movie }) => {
         </Link>
       </Paper>
       <Paper component="ul" sx={{ ...root }}>
-        <Link to={`/movies/${movie.id}/recommendations`}>
+        <Link to={`/movies/${movie.id}/similar`}>
           <Button variant="outlined" size="medium" color="primary">
-            Recommendations
+            Similar Movies
           </Button>
         </Link>
       </Paper>

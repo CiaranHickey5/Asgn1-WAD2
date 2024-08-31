@@ -18,11 +18,7 @@ import Avatar from "@mui/material/Avatar";
 export default function MovieCard({ movie, action }) {
   const { favorites } = useContext(MoviesContext);
 
-  if (favorites.find((id) => id === movie.id)) {
-    movie.favorite = true;
-  } else {
-    movie.favorite = false;
-  }
+  movie.favorite = favorites.includes(movie.id);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -65,7 +61,7 @@ export default function MovieCard({ movie, action }) {
         </Grid>
       </CardContent>
       <CardActions disableSpacing>
-        {action(movie)}
+        {action && action(movie)}
         <Link to={`/movies/${movie.id}`}>
           <Button variant="outlined" size="medium" color="primary">
             More Info ...
