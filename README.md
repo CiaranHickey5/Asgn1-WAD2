@@ -33,6 +33,8 @@ This assignemnt is a continuation from the weekly labs where other features must
   Able to sort the movie list by either highest rating (default), alphabetical order or newest release date.
 - Feature 8: Movie videos
   Displays the videos of a particular movie and each videos name.
+- Feature 9: Similar movies
+  Displays a list of similar movies based on the original movie id selected. Can add to favourites list like other pages.
 
 ## Setup requirements.
 
@@ -40,14 +42,21 @@ After cloning the repo I needed to install the node packages using npm install i
 
 ## API endpoints.
 
+### Three static endpoints
+
 - Discover list of now playing movies - movies/nowPlaying
 - Discover list of popular movies - movies/popular
 - Discover list of top rated movies - movies/topRated
+
+### Two parameterized endpoints
+
 - Discover videos of particular movie - movies/:id/videos
+- Discover similar movies to particular movie - movies/:id/similar
 
 ## Routing.
 
-- /movies/:id/videos - displays videos associated with particular movie
+- /movies/:id/videos
+- /movies/:id/similar
 - /movies/nowPlaying
 - /movies/popular
 - /movies/topRated
