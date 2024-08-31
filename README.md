@@ -16,6 +16,8 @@ This repo contains a movie app, specifically using TMDB api and react.
 It displays the latest and greatest movies. Movie statistics, reviews and more can be found.
 This assignemnt is a continuation from the weekly labs where other features must be added to the app.
 
+Video demonstration: https://www.youtube.com/watch?v=OLbG7RCJsv8
+
 ## Features.
 
 - Feature 1: Three new static endpoints
